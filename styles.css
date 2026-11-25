@@ -1,0 +1,354 @@
+/* ============================================================================
+ * styles.css — PRIf-24/1 svetainės stiliai.
+ * Mobile-first: bazinės taisyklės skirtos telefonui, media query (min-width)
+ * prideda stilius platesniems ekranams.
+ * Tema: pagal sistemos nustatymą (prefers-color-scheme), bet vartotojas gali
+ * perjungti rankiniu būdu (data-theme atributas ant <html>).
+ * ==========================================================================*/
+
+/* ---------- Spalvų kintamieji: ŠVIESI tema (numatytoji) ---------- */
+:root {
+  --bg:        #f6f7fb;
+  --surface:   #ffffff;
+  --surface-2: #eef1f8;
+  --text:      #1b1f2a;
+  --text-soft: #5b6273;
+  --border:    #e0e4ee;
+  --primary:   #1f4fd8;
+  --primary-ink:#ffffff;
+  --accent:    #0e7c6b;
+  --w1:        #b45309;   /* 1 sav. ženkliukas */
+  --w2:        #7c3aed;   /* 2 sav. ženkliukas */
+  --danger:    #c0392b;
+  --shadow:    0 1px 3px rgba(20, 30, 60, .08), 0 6px 20px rgba(20, 30, 60, .06);
+  --radius:    14px;
+  --maxw:      1080px;
+}
+
+/* ---------- TAMSI tema: pagal sistemą ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:        #0f1420;
+    --surface:   #171d2b;
+    --surface-2: #1f2738;
+    --text:      #e9edf6;
+    --text-soft: #a3adc2;
+    --border:    #2a3346;
+    --primary:   #6d93ff;
+    --primary-ink:#0b1020;
+    --accent:    #2dd4bf;
+    --w1:        #f6ad55;
+    --w2:        #c4b5fd;
+    --danger:    #ff7a6b;
+    --shadow:    0 1px 3px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+  }
+}
+
+/* ---------- Rankinis perjungimas (perrašo sistemą) ---------- */
+:root[data-theme="dark"] {
+  --bg:        #0f1420;
+  --surface:   #171d2b;
+  --surface-2: #1f2738;
+  --text:      #e9edf6;
+  --text-soft: #a3adc2;
+  --border:    #2a3346;
+  --primary:   #6d93ff;
+  --primary-ink:#0b1020;
+  --accent:    #2dd4bf;
+  --w1:        #f6ad55;
+  --w2:        #c4b5fd;
+  --danger:    #ff7a6b;
+  --shadow:    0 1px 3px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+}
+
+/* ---------- Bazė ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { line-height: 1.2; }
+
+a { color: var(--primary); }
+
+.container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 16px; }
+
+/* Prieinamumas: praleisti navigaciją */
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--primary); color: var(--primary-ink);
+  padding: 10px 16px; border-radius: 0 0 10px 0; z-index: 200;
+}
+.skip-link:focus { left: 0; }
+
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; border-radius: 6px; }
+
+/* ============================ NAVIGACIJA ============================ */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  backdrop-filter: saturate(140%) blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav {
+  max-width: var(--maxw); margin: 0 auto; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.nav__brand { font-weight: 700; font-size: 1.15rem; text-decoration: none; color: var(--text); white-space: nowrap; }
+
+.nav__toggle {
+  display: inline-flex; flex-direction: column; justify-content: center; gap: 5px;
+  width: 42px; height: 42px; padding: 9px; border: 1px solid var(--border);
+  background: var(--surface); border-radius: 10px; cursor: pointer;
+}
+.nav__toggle span { display: block; height: 2px; background: var(--text); border-radius: 2px; transition: .2s; }
+
+.nav__menu {
+  list-style: none; margin: 0; padding: 0;
+  position: absolute; top: 100%; left: 0; right: 0;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  display: none; flex-direction: column; box-shadow: var(--shadow);
+}
+.nav__menu.is-open { display: flex; }
+.nav__menu li { border-top: 1px solid var(--border); }
+.nav__menu a, .theme-toggle {
+  display: block; width: 100%; text-align: left;
+  padding: 14px 20px; color: var(--text); text-decoration: none; font-weight: 500;
+}
+.nav__menu a:hover { background: var(--surface-2); }
+
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; border: 0; cursor: pointer; font: inherit; font-weight: 500;
+}
+
+@media (min-width: 820px) {
+  .nav__toggle { display: none; }
+  .nav__menu {
+    position: static; display: flex; flex-direction: row; align-items: center; gap: 4px;
+    background: transparent; border: 0; box-shadow: none;
+  }
+  .nav__menu li { border: 0; }
+  .nav__menu a { padding: 8px 12px; border-radius: 8px; }
+  .theme-toggle { padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; }
+}
+
+/* ============================ HERO ============================ */
+.hero {
+  padding: 40px 0 28px;
+  background:
+    radial-gradient(1200px 400px at 15% -10%, color-mix(in srgb, var(--primary) 18%, transparent), transparent),
+    var(--bg);
+}
+.hero__eyebrow { margin: 0 0 8px; color: var(--text-soft); font-weight: 600; font-size: .9rem; letter-spacing: .02em; }
+.hero__title { margin: 0 0 10px; font-size: clamp(1.6rem, 5vw, 2.5rem); font-weight: 700; }
+.hero__desc { margin: 0 0 22px; color: var(--text-soft); max-width: 60ch; }
+
+/* „Šiandien" blokas */
+.today {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow);
+}
+.today__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; margin-bottom: 12px; }
+.today__title { margin: 0; font-size: 1.1rem; }
+.today__meta { color: var(--text-soft); font-size: .92rem; }
+.today__list { display: grid; gap: 10px; }
+.today__empty { color: var(--text-soft); }
+
+.lesson-row {
+  display: grid; gap: 4px 12px; padding: 12px 14px;
+  background: var(--surface-2); border-radius: 12px; border: 1px solid var(--border);
+}
+.lesson-row.is-now { border-color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent); }
+.lesson-row__time { font-weight: 700; font-variant-numeric: tabular-nums; }
+.lesson-row__subject { font-weight: 600; }
+.lesson-row__meta { color: var(--text-soft); font-size: .9rem; }
+.tag-now { display: inline-block; margin-left: 8px; font-size: .72rem; font-weight: 700;
+  color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 1px 8px; vertical-align: middle; }
+
+.next-label { font-weight: 600; color: var(--accent); margin-right: 6px; }
+
+/* ============================ SEKCIJOS ============================ */
+.section { padding: 48px 0; }
+.section--alt { background: var(--surface-2); }
+.section__title { font-size: clamp(1.35rem, 4vw, 1.9rem); margin: 0 0 8px; }
+.section__lead { color: var(--text-soft); margin: 0 0 22px; max-width: 70ch; }
+.subheading { margin: 36px 0 14px; font-size: 1.2rem; }
+
+/* ---------- Ženkliukai ---------- */
+.badge {
+  display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .02em;
+  padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; line-height: 1.5;
+}
+.badge--w1 { color: var(--w1); }
+.badge--w2 { color: var(--w2); }
+
+/* ---------- Filtras ---------- */
+.filter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.filter__btn {
+  font: inherit; font-weight: 600; cursor: pointer;
+  padding: 8px 16px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+}
+.filter__btn:hover { border-color: var(--primary); }
+.filter__btn.is-active { background: var(--primary); color: var(--primary-ink); border-color: var(--primary); }
+
+/* ============================ TVARKARAŠTIS ============================ */
+.schedule { display: grid; gap: 18px; }
+.day { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.day__head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  padding: 14px 18px; background: var(--surface-2); border-bottom: 1px solid var(--border);
+}
+.day__name { margin: 0; font-size: 1.05rem; }
+.day__count { color: var(--text-soft); font-size: .85rem; }
+.day__empty { padding: 16px 18px; color: var(--text-soft); }
+
+/* Telefonui: paskaitos kaip kortelės */
+.day__lessons { display: grid; gap: 1px; background: var(--border); }
+.lesson {
+  background: var(--surface); padding: 14px 18px;
+  display: grid; gap: 6px;
+}
+.lesson__top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.lesson__time { font-weight: 700; font-variant-numeric: tabular-nums; }
+.lesson__type {
+  font-size: .75rem; font-weight: 600; color: var(--text-soft);
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 1px 9px;
+}
+.lesson__subject { font-weight: 600; }
+.lesson__subject .code { color: var(--text-soft); font-weight: 500; font-size: .85em; }
+.lesson__details { display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--text-soft); font-size: .9rem; }
+.room { border-bottom: 1px dotted var(--text-soft); cursor: help; }
+
+/* Nuo planšetės: lentelės maketas kiekvienai dienai */
+@media (min-width: 720px) {
+  .lesson {
+    grid-template-columns: 120px 1fr 160px 1fr;
+    align-items: center; gap: 6px 16px;
+  }
+  .lesson__top { grid-column: auto; }
+  .lesson__subject { grid-column: auto; }
+  .lesson__details { grid-column: 1 / -1; }
+}
+
+/* ============================ EGZAMINAI ============================ */
+.exams { display: grid; gap: 14px; margin-bottom: 28px; }
+.exam {
+  display: grid; gap: 10px; grid-template-columns: 1fr auto;
+  align-items: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow);
+}
+.exam__info h4 { margin: 0 0 4px; font-size: 1.02rem; }
+.exam__info .code { color: var(--text-soft); font-weight: 500; font-size: .85em; }
+.exam__meta { color: var(--text-soft); font-size: .9rem; margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.countdown { text-align: center; min-width: 96px; }
+.countdown__num { display: block; font-size: 1.7rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.countdown__label { font-size: .75rem; color: var(--text-soft); }
+.countdown.is-soon .countdown__num { color: var(--danger); }
+.countdown.is-past { opacity: .6; }
+.countdown.is-today .countdown__num { color: var(--accent); }
+
+/* Laisvai pasirenkami */
+.electives {
+  background: var(--surface); border: 1px dashed var(--border);
+  border-radius: var(--radius); padding: 16px 18px; margin-bottom: 8px;
+}
+.electives h4 { margin: 0 0 4px; }
+.electives__note { color: var(--text-soft); font-size: .9rem; margin: 0 0 10px; }
+.electives ul { margin: 0; padding-left: 18px; columns: 2; column-gap: 28px; }
+.electives li { margin-bottom: 4px; break-inside: avoid; }
+@media (max-width: 620px) { .electives ul { columns: 1; } }
+
+/* ---------- Accordion (archyvas) ---------- */
+.accordion { display: grid; gap: 10px; }
+.accordion details {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+}
+.accordion summary {
+  cursor: pointer; padding: 15px 18px; font-weight: 600; list-style: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.accordion summary::-webkit-details-marker { display: none; }
+.accordion summary::after { content: "+"; font-size: 1.3rem; color: var(--text-soft); transition: transform .2s; }
+.accordion details[open] summary::after { content: "–"; }
+.accordion__body { padding: 0 18px 14px; display: grid; gap: 8px; }
+.archive-row { padding: 10px 0; border-top: 1px solid var(--border); }
+.archive-row:first-child { border-top: 0; }
+.archive-row strong { display: block; }
+.archive-row span { color: var(--text-soft); font-size: .9rem; }
+
+/* ============================ KORTELĖS (dalykai) ============================ */
+.cards { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 980px) { .cards { grid-template-columns: repeat(3, 1fr); } }
+
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow);
+  display: flex; flex-direction: column; gap: 12px;
+}
+.card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.card__name { margin: 0; font-size: 1.05rem; }
+.card__code { color: var(--text-soft); font-size: .82rem; font-weight: 500; }
+.card__credits {
+  flex-shrink: 0; font-size: .8rem; font-weight: 700;
+  background: color-mix(in srgb, var(--primary) 14%, transparent); color: var(--primary);
+  border-radius: 999px; padding: 3px 10px; white-space: nowrap;
+}
+.lect { border-top: 1px solid var(--border); padding-top: 10px; }
+.lect__name { font-weight: 600; }
+.lect__title { color: var(--text-soft); font-size: .85rem; margin-bottom: 6px; }
+.lect__contacts { display: grid; gap: 3px; font-size: .9rem; }
+.lect__contacts a { word-break: break-word; }
+.muted { color: var(--text-soft); }
+
+/* ============================ NUORODOS ============================ */
+.links-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .links-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px) { .links-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.link-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 15px 18px; text-decoration: none; color: var(--text); font-weight: 600;
+  box-shadow: var(--shadow); transition: transform .12s, border-color .12s;
+}
+.link-btn:hover { transform: translateY(-2px); border-color: var(--primary); }
+.link-btn::after { content: "↗"; color: var(--text-soft); }
+
+/* ============================ BENDRUOMENĖ ============================ */
+.community { display: grid; gap: 18px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .community { grid-template-columns: 1.2fr 1fr; } }
+
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+.panel h3 { margin: 0 0 12px; font-size: 1.1rem; }
+.team-member { padding: 10px 0; border-top: 1px solid var(--border); }
+.team-member:first-of-type { border-top: 0; }
+.team-member strong { display: block; }
+.team-member .role { color: var(--text-soft); font-size: .9rem; }
+
+.btn {
+  display: inline-block; background: var(--primary); color: var(--primary-ink);
+  text-decoration: none; font-weight: 600; padding: 10px 18px; border-radius: 10px; border: 0;
+}
+.btn:hover { filter: brightness(1.05); }
+
+/* ============================ PORAŠTĖ ============================ */
+.site-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 28px 0; margin-top: 10px; }
+.site-footer p { margin: 4px 0; color: var(--text-soft); font-size: .92rem; }
+.site-footer strong { color: var(--text); }

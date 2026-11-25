@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="PRIf-24/1 studijų grupės svetainė: tvarkaraštis, egzaminai, dėstytojai ir naudingos nuorodos. VILNIUS TECH, Programų sistemų inžinerija." />
+  <title>PRIf-24/1 · Programų sistemų inžinerija · VILNIUS TECH</title>
+
+  <!-- Google Fonts (leidžiama). Jei nenori išorinės priklausomybės — pašalink šias 3 eilutes, CSS turi atsarginius sisteminius šriftus. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Praleisti navigaciją (prieinamumas su klaviatūra) -->
+  <a class="skip-link" href="#turinys">Pereiti prie turinio</a>
+
+  <!-- ===================== FIKSUOTA NAVIGACIJA ===================== -->
+  <header class="site-header">
+    <nav class="nav" aria-label="Pagrindinė navigacija">
+      <a class="nav__brand" href="#virsus">PRIf-24/1</a>
+
+      <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Atidaryti meniu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav__menu" id="navMenu">
+        <li><a href="#tvarkarastis">Tvarkaraštis</a></li>
+        <li><a href="#egzaminai">Egzaminai</a></li>
+        <li><a href="#destytojai">Dalykai ir dėstytojai</a></li>
+        <li><a href="#nuorodos">Nuorodos</a></li>
+        <li><a href="#kontaktai">Kontaktai</a></li>
+        <li>
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Keisti temą (šviesi / tamsi)">
+            <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
+            <span class="theme-toggle__label">Tema</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="turinys">
+
+    <!-- ===================== VIRŠUS / HERO ===================== -->
+    <section id="virsus" class="hero">
+      <div class="container">
+        <p class="hero__eyebrow" id="heroEyebrow"></p>
+        <h1 class="hero__title" id="heroTitle"></h1>
+        <p class="hero__desc" id="heroDesc"></p>
+
+        <!-- „Šiandien / artimiausia paskaita" blokas (užpildo app.js) -->
+        <div class="today" id="todayBox" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- ===================== TVARKARAŠTIS ===================== -->
+    <section id="tvarkarastis" class="section">
+      <div class="container">
+        <h2 class="section__title">Paskaitų tvarkaraštis</h2>
+        <p class="section__lead">
+          Savaitės vaizdas (pirmadienis–penktadienis). Ženkliukas
+          <span class="badge badge--w1">1&nbsp;sav.</span> /
+          <span class="badge badge--w2">2&nbsp;sav.</span> reiškia, kad paskaita vyksta tik
+          nelyginėmis / lyginėmis savaitėmis.
+        </p>
+
+        <div class="filter" role="group" aria-label="Filtruoti pagal savaitę">
+          <button class="filter__btn is-active" data-week="all" type="button">Visos</button>
+          <button class="filter__btn" data-week="1" type="button">1 sav.</button>
+          <button class="filter__btn" data-week="2" type="button">2 sav.</button>
+        </div>
+
+        <div id="scheduleWrap" class="schedule"></div>
+      </div>
+    </section>
+
+    <!-- ===================== EGZAMINAI ===================== -->
+    <section id="egzaminai" class="section section--alt">
+      <div class="container">
+        <h2 class="section__title">Egzaminai</h2>
+        <p class="section__lead">Šio semestro egzaminai (5 semestras, 2026 ruduo) su atgaliniu skaičiavimu.</p>
+
+        <div id="examsWrap" class="exams"></div>
+
+        <div id="electivesWrap" class="electives"></div>
+
+        <h3 class="subheading">Ankstesnių semestrų archyvas</h3>
+        <div id="archiveWrap" class="accordion"></div>
+      </div>
+    </section>
+
+    <!-- ===================== DALYKAI IR DĖSTYTOJAI ===================== -->
+    <section id="destytojai" class="section">
+      <div class="container">
+        <h2 class="section__title">Dalykai ir dėstytojai</h2>
+        <p class="section__lead">Šio semestro dalykai ir juos dėstantys dėstytojai.</p>
+        <div id="subjectsWrap" class="cards"></div>
+      </div>
+    </section>
+
+    <!-- ===================== NUORODOS ===================== -->
+    <section id="nuorodos" class="section section--alt">
+      <div class="container">
+        <h2 class="section__title">Naudingos nuorodos</h2>
+        <div id="linksWrap" class="links-grid"></div>
+      </div>
+    </section>
+
+    <!-- ===================== KONTAKTAI / BENDRUOMENĖ ===================== -->
+    <section id="kontaktai" class="section">
+      <div class="container">
+        <h2 class="section__title">Kontaktai / bendruomenė</h2>
+        <div id="communityWrap" class="community"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== PORAŠTĖ ===================== -->
+  <footer class="site-footer">
+    <div class="container" id="footerWrap"></div>
+  </footer>
+
+  <!-- Duomenys PIRMA, paskui logika -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

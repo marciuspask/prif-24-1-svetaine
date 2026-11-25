@@ -28,13 +28,20 @@ const DATA = {
   },
 
   /* --------------------------------------------------------------------------
-   * Semestro pradžios pirmadienis.
-   * Pagal jį JS apskaičiuoja, ar dabar „1 savaitė" (nelyginė) ar „2 savaitė"
-   * (lyginė). Jei universitetas pakeistų atskaitos tašką — keisk čia.
+   * Atskaitos pirmadienis savaitės (1 / 2) skaičiavimui.
+   * SVARBU: tai turi būti kurios nors „1 savaitės" PIRMADIENIS (pagal oficialų
+   * universiteto tvarkaraštį), nebūtinai pats semestro pradžios pirmadienis.
+   * Pagal jį JS apskaičiuoja, ar dabar „1 savaitė", ar „2 savaitė":
+   *   weekIndex = kiek pilnų savaičių praėjo nuo šio pirmadienio;
+   *   lyginis weekIndex (0, 2, 4…) => „1 savaitė", nelyginis => „2 savaitė".
+   *
+   * Patikra pagal oficialią sistemą: 2026-11-23–29 = 1 savaitė,
+   * 2026-11-30–12-06 = 2 savaitė. 2026-08-31 yra lygiai 12 savaičių (lyginis
+   * skaičius) prieš 2026-11-23, todėl paritetas sutampa.
+   * Jei kada nereikėtų — įrašyk bet kurį kitą žinomą „1 savaitės" pirmadienį.
    * Formatas: "YYYY-MM-DD" (turi būti PIRMADIENIS).
-   * 1 savaitė = nelyginė (savaitės numeris nuo pradžios yra nelyginis).
    * ------------------------------------------------------------------------*/
-  semesterStartMonday: "2026-09-07",
+  semesterStartMonday: "2026-08-31",
 
   /* --------------------------------------------------------------------------
    * Korpusų adresai. Raktas = kodas, naudojamas tvarkaraštyje ir egzaminuose.
